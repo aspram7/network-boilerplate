@@ -1,0 +1,23 @@
+@import "~styles/root";
+
+.app-image-card {
+  box-shadow: 0 5px 5px grey;
+  width: 100%;
+  padding: 10px 15px 30px;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+  }
+
+  h5 {
+    margin-top: 15px;
+    font-size: 18px;
+    color: $text-color;
+    transition: 0.3s;
+
+    &:hover {
+      color: $text-color-hover;
+    }
+  }
+}
