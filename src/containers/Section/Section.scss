@@ -2,31 +2,8 @@
 
 .app-section {
   padding: 120px 0;
-  display: flex;
-  flex-wrap: wrap;
 
-  &__image-card {
-    width: 24%;
-    margin: 5px 5px 20px;
-  }
-
-  &__image-card-modal {
-    width: 100%;
-
-    h5 {
-      margin-top: 20px;
-    }
-  }
-}
-
-.my-modal-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .my-modal {
-    position: absolute;
-    background-color: #fff;
-    box-shadow: 0 3px 5px rgb(94, 92, 92);
-    padding: 34px;
+  &__post {
+    margin: 10px 0;
   }
 }

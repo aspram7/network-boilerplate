@@ -1,43 +1,42 @@
 import React, { Component } from "react";
 
-import Modal from "@material-ui/core/Modal";
-
-import ImageCard from "components/ImageCard/ImageCard";
-// import Service from "api/service";
+import { getAllPosts, updatePosts } from "api/requestData";
+import service from "api/service";
+import Post from "components/Post/Post";
+import Button from "components/Button/Button";
 
 import "./Section.scss";
 
 class Section extends Component {
   state = {
     posts: [],
-    modalShow: false,
-    activeItem: {},
   };
+
   componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/photos")
-      .then((response) => response.json())
-      .then((json) => {
-        const data = json.filter((item) => item.albumId === 1);
+    service
+      .getAllPosts()
+      .then((data) => {
         this.setState({
           posts: data,
         });
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Error");
       });
   }
 
-  viewItem = (item) => {
-    this.setState({
-      modalShow: true,
-      activeItem: item,
-    });
-    console.log(item);
-  };
-
-  handleClose = () => {
-    this.setState({
-      modalShow: false,
+  updateItem = () => {
+    service.updatePost(1, { title: "Another Title" }).then((item) => {
+      const newItem = this.state.posts.map((el) => {
+        if (el.id === item.id) {
+          return item;
+        } else {
+          return el;
+        }
+      });
+      this.setState({
+        posts: newItem,
+      });
     });
   };
 
@@ -45,31 +44,9 @@ class Section extends Component {
     return (
       <div className="app-section">
         {this.state.posts.map((item) => {
-          return (
-            <ImageCard
-              className="app-section__image-card"
-              key={item.id}
-              image={item.thumbnailUrl}
-              children={item.title}
-              onClick={() => this.viewItem(item)}
-            />
-          );
+          return <Post className="app-section__post" key={item.id} title={item.title} body={item.body} />;
         })}
-        <Modal
-          open={this.state.modalShow}
-          onClose={this.handleClose}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          className="my-modal-container"
-        >
-          <div className="my-modal">
-            <div className="app-section__image-card-modal">
-              <img src={this.state.activeItem.url} alt={this.state.activeItem.title} />
-              <h5>{this.state.activeItem.title}</h5>
-            </div>
-          </div>
-        </Modal>
-        {/* <Service children="Click Me" /> */}
+        <Button onClick={this.updateItem}>Update Item</Button>
       </div>
     );
   }

@@ -1,0 +1,11 @@
+@import "~styles/root";
+
+.post-component {
+  border: 1px solid $primary-color;
+  padding: 10px;
+  width: 100%;
+
+  h2 {
+    margin-bottom: 10px;
+  }
+}
