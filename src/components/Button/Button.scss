@@ -1,4 +1,16 @@
 @import "~styles/root";
 
 .app-button {
+  width: fit-content;
+  border: none;
+  outline: none;
+  background-color: $primary-color;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: #fff;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
 }

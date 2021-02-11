@@ -48,6 +48,13 @@ class Service {
   getAllPosts = () => {
     return this._request("GET", "/posts");
   };
+  getPost = (start, limit) => {
+    return new Promise((res, rej) => {
+      setTimeout(() => {
+        return res(this._request("GET", `/posts?_start=${start}&_limit=${limit}}`));
+      }, 3000);
+    });
+  };
   updatePost = (id, data) => {
     return this._request("PATCH", `/posts/${id}`, data);
   };
