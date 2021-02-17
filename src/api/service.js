@@ -48,7 +48,10 @@ class Service {
   getAllPosts = () => {
     return this._request("GET", "/posts");
   };
-  getPost = (start, limit) => {
+  getPost = (id) => {
+    return this._request("GET", `/posts/${id}`);
+  };
+  getPosts = (start, limit) => {
     return new Promise((res, rej) => {
       setTimeout(() => {
         return res(this._request("GET", `/posts?_start=${start}&_limit=${limit}}`));

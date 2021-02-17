@@ -1,18 +1,11 @@
 import React from "react";
 
-import Header from "containers/Header/Header";
-import Footer from "containers/Footer/Footer";
-import Section from "containers/Section/Section";
-import Layout from "components/Layout/Layout";
+import AppRoutes from "routes/AppRoutes";
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <Layout>
-        <Section />
-      </Layout>
-      <Footer />
+      <AppRoutes />
     </div>
   );
 }

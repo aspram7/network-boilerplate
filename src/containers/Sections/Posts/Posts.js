@@ -5,11 +5,12 @@ import service from "api/service";
 import Post from "components/Post/Post";
 import Button from "components/Button/Button";
 
-import "./Section.scss";
+import "./Posts.scss";
 
 const limit = 9;
 let start = 0;
-class Section extends Component {
+
+export class Posts extends Component {
   state = {
     posts: [],
     hasMore: true,
@@ -21,7 +22,7 @@ class Section extends Component {
       loading: true,
     });
     service
-      .getPost(0, 9)
+      .getPosts(0, 9)
       .then((data) => {
         this.setState({
           posts: data,
@@ -56,7 +57,7 @@ class Section extends Component {
     this.setState({ loading: true }, () => {
       start = this.state.posts.length;
       service
-        .getPost(start, limit)
+        .getPosts(start, limit)
         .then((data) => {
           this.setState({
             posts: [...this.state.posts, ...data],
@@ -71,15 +72,14 @@ class Section extends Component {
         });
     });
   };
-
   render() {
     return (
-      <div className="app-section">
+      <div className="app-posts">
         {this.state.posts.length === 0 && this.state.loading && <h4>Loading...</h4>}
         {this.state.posts.length === 0 && !this.state.loading && <h4>Data not found</h4>}
-        <div className="app-section__post-container">
-          {this.state.posts.map((item) => {
-            return <Post className="app-section__post" key={item.id} title={item.title} body={item.body} />;
+        <div className="app-posts__post-container">
+          {this.state.posts.map((post) => {
+            return <Post className="app-posts__post" key={post.id} post={post} />;
           })}
         </div>
         {this.state.hasMore && (
@@ -92,4 +92,4 @@ class Section extends Component {
   }
 }
 
-export default Section;
+export default Posts;
