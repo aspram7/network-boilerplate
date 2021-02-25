@@ -1,0 +1,10 @@
+@import "~styles/root";
+
+.app-nav-link {
+  text-decoration: none;
+  color: unset;
+
+  &--active {
+    color: rgb(21, 83, 253);
+  }
+}

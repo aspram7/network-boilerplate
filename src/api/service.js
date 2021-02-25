@@ -18,7 +18,7 @@ class Service {
   //     age: 27,
   //   })
   //     .then((data) => {
-  //       console.log(data, 11);
+  //       console.log(data);
   //     })
   //     .catch((err) => {
   //       console.log(err);
@@ -60,6 +60,10 @@ class Service {
   };
   updatePost = (id, data) => {
     return this._request("PATCH", `/posts/${id}`, data);
+  };
+
+  createPost = (data) => {
+    return this._request("POST", `/posts`, data);
   };
 }
 

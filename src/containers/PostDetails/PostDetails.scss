@@ -1,6 +1,22 @@
-.post-details {
-  &__link {
-    pointer-events: none;
-    cursor: default;
+.app-post-details {
+  &__modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &__inner {
+      width: 600px;
+      height: 400px;
+      box-shadow: 0 0 5px gray;
+      background-color: #fff;
+      padding: 20px;
+
+      &__input {
+        border: 1px solid grey;
+        padding: 4px;
+        display: block;
+        margin: 10px;
+        width: 80%;
+      }
+    }
   }
 }

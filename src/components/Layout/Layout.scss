@@ -1,6 +1,7 @@
 @import "~styles/root";
 
 .app-layout {
-  width: 80%;
+  width: $layout-width;
   margin: auto;
+  padding: 110px 0;
 }

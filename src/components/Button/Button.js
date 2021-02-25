@@ -4,9 +4,12 @@ import cx from "classnames";
 
 import "./Button.scss";
 
-const Button = ({ onClick, children, disabled }) => {
+const Button = ({ onClick, children, disabled, className }) => {
   return (
-    <button className={cx("app-button", disabled && "disabled")} onClick={onClick}>
+    <button
+      className={cx("app-button", className, disabled && "disabled")}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

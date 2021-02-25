@@ -1,17 +1,18 @@
 @import "~styles/root";
 
 .app-header {
-  &__fixed {
-    position: fixed;
-    background-color: rgb(243, 236, 236);
-    width: 100%;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(211, 208, 208, 0.333);
-  }
+  position: fixed;
+  background-color: rgb(243, 236, 236);
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(211, 208, 208, 0.333);
+  z-index: 10;
 
   &__container {
     display: flex;
     justify-content: space-between;
+    width: $layout-width;
+    margin: auto;
 
     img {
       width: 81px;
