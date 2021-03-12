@@ -16,7 +16,7 @@ class Home extends Component {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-    // fbService.initializePosts();
+    fbService.initializePosts();
   }
 
   render() {

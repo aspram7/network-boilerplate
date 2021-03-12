@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import "./ImageCard.scss";
 
 function ImageCard({ className, image, children, onClick }) {
@@ -10,5 +10,18 @@ function ImageCard({ className, image, children, onClick }) {
     </div>
   );
 }
+
+ImageCard.defaultProps = {
+  className: "",
+  image: "",
+  onClick: () => {},
+};
+
+ImageCard.propTypes = {
+  className: PropTypes.string,
+  image: PropTypes.string.isRequired,
+  children: PropTypes.node,
+  onClick: PropTypes.func,
+};
 
 export default ImageCard;

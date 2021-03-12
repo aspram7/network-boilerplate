@@ -117,6 +117,7 @@ export class Posts extends Component {
           body: this.state.bodyValue,
         })
         .then((data) => {
+          console.log(data);
           this.setState(
             {
               posts: [...this.state.posts, data],
@@ -181,7 +182,7 @@ export class Posts extends Component {
                 key={post.id}
                 post={post}
                 isLink
-                remove={() => this.deletePost(post.id)}
+                onRemove={() => this.deletePost(post.id)}
               />
             );
           })}

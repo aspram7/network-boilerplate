@@ -4,7 +4,7 @@ import cx from "classnames";
 
 import "./Button.scss";
 
-const Button = ({ onClick, children, disabled, className }) => {
+const Button = ({ className, disabled, children, onClick }) => {
   return (
     <button
       className={cx("app-button", className, disabled && "disabled")}
@@ -15,10 +15,17 @@ const Button = ({ onClick, children, disabled, className }) => {
   );
 };
 
+Button.defaultProps = {
+  className: "",
+  disabled: false,
+  onClick: () => {},
+};
+
 Button.propTypes = {
+  className: PropTypes.string,
   disabled: PropTypes.bool,
+  children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
-  children: PropTypes.string.isRequired,
 };
 
 export default Button;

@@ -1,29 +1,34 @@
-import React from "react";
-
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
 import EditIcon from "@material-ui/icons/Edit";
 import { Button } from "@material-ui/core";
 
 import Link from "components/Link/Link";
 
 import "./Post.scss";
+import { AppContext } from "context/AppContext";
 
-function Post({ post, className = "", isLink = false, edit, remove }) {
-  const removeHandler = (e) => {
+function Post({ className, isLink, post, onEdit, onRemove }) {
+  const context = useContext(AppContext);
+  const _removeHandler = (e) => {
     e.preventDefault();
-    remove();
+    onRemove();
   };
   const Wrapper = ({ children }) => {
     const postClassName = `post-component ${className}`;
     return isLink ? (
       <Link to={`/posts/${post.id}`} className={postClassName}>
-        <Button variant="contained" color="primary" onClick={removeHandler}>
-          Remove
-        </Button>
+        {context.state.user ? (
+          <Button variant="contained" color="primary" onClick={_removeHandler}>
+            Remove
+          </Button>
+        ) : null}
+
         {children}
       </Link>
     ) : (
       <div className={postClassName}>
-        <Button variant="contained" color="primary" onClick={edit}>
+        <Button variant="contained" color="primary" onClick={onEdit}>
           <EditIcon />
           <span className="post-component__edit">Edit</span>
         </Button>
@@ -38,5 +43,21 @@ function Post({ post, className = "", isLink = false, edit, remove }) {
     </Wrapper>
   );
 }
+
+Post.defaultProps = {
+  className: "",
+  isLink: false,
+  post: {},
+  onEdit: () => {},
+  onRemove: () => {},
+};
+
+Post.propTypes = {
+  className: PropTypes.string,
+  isLink: PropTypes.bool,
+  post: PropTypes.object.isRequired,
+  onEdit: PropTypes.func,
+  onRemove: PropTypes.func,
+};
 
 export default Post;

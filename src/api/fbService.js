@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/database";
+import "firebase/auth";
 
 import firebaseConfig from "./firebaseConfig";
 
@@ -77,6 +78,30 @@ class FbService {
       .set(newItem);
 
     return newItem;
+  };
+
+  login = async (credentials) => {
+    const res = await firebase
+      .auth()
+      .signInWithEmailAndPassword(credentials.email, credentials.password);
+    const { uid, email, displayName, photoURL } = res.user;
+    return { uid, email, displayName, photoURL };
+  };
+
+  signup = async (credentials) => {
+    const res = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(credentials.email, credentials.password);
+    const user = firebase.auth().currentUser;
+    await user.updateProfile({
+      displayName: credentials.name,
+    });
+    const { uid, email, displayName, photoURL } = res.user;
+    return { uid, email, displayName, photoURL };
+  };
+
+  logout = async () => {
+    await firebase.auth().signOut();
   };
 }
 

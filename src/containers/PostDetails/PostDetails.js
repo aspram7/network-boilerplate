@@ -83,7 +83,7 @@ export class PostDetails extends Component {
     // }
     return (
       <div className="app-post-details">
-        <Post post={this.state.post} edit={this.handleOpen} />
+        <Post post={this.state.post} onEdit={this.handleOpen} />
         <Modal
           open={this.state.isOpen}
           onClose={this.handleClose}
