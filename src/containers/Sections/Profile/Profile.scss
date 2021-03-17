@@ -1,7 +1,12 @@
+@import "~styles/root";
 .profile {
   display: flex;
   justify-content: space-between;
   &__name {
     font-size: 20px;
+
+    span {
+      color: $primary-color;
+    }
   }
 }

@@ -74,12 +74,16 @@ function Signup(props) {
       switch (false) {
         case validation("name", name):
           errors["name"] = "*name is not valid!";
+        /* falls through */
         case validation("email", email):
           errors["email"] = "*email is not valid!";
+        /* falls through */
         case validation("password", password):
           errors["password"] = "*password must be min 6 and max 10 letters!";
+        /* falls through */
         case password === confirmPassword:
           errors["confirmPassword"] = "*passwords are not match!";
+        /* falls through */
         default:
           errors = { ...initialState, ...errors };
       }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import postsMockup from "data-mockup/post-mockup";
 
 import fbService from "api/fbService";
@@ -16,12 +17,30 @@ class Home extends Component {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-    fbService.initializePosts();
+    // fbService.initializePosts();
+    // fbService.initializeTodos();
   }
 
   render() {
-    return <div>Home Page </div>;
+    return (
+      <div>
+        <button onClick={this.props.incrementCount}>Increment</button>
+        <span>{this.props.count}</span>
+        <button onClick={this.props.decrementCount}>Decrement</button>
+      </div>
+    );
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    count: state.count,
+  };
+};
+
+const mapDispatchToProps = {
+  incrementCount: () => ({ type: "INCREMENT_COUNT" }),
+  decrementCount: () => ({ type: "DECREMENT_COUNT" }),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

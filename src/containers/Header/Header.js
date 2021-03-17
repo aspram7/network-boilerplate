@@ -12,7 +12,7 @@ import { AppContext } from "context/AppContext";
 const headerLink = [
   { to: "/", title: "Home" },
   { to: "/about", title: "About" },
-  { to: "/todo", title: "Todo" },
+  { to: "/todos", title: "Todos" },
   { to: "/posts", title: "Posts" },
   { to: "/contact", title: "Contact" },
 ];

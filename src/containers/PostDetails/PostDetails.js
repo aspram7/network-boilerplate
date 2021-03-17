@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import service from "api/service";
 import fbService from "api/fbService";
 
-import Modal from "@material-ui/core/Modal";
-import { Button } from "@material-ui/core";
-
 import Post from "components/Post/Post";
+import { AppContext } from "context/AppContext";
 
 import "./PostDetails.scss";
+import { actionTypes } from "context/actionTypes";
+import PostModal from "components/PostModal/PostModal";
 
 export class PostDetails extends Component {
   constructor(props) {
@@ -19,6 +19,8 @@ export class PostDetails extends Component {
       bodyValue: "",
     };
   }
+
+  static contextType = AppContext;
 
   componentDidMount() {
     fbService
@@ -56,24 +58,27 @@ export class PostDetails extends Component {
         body: this.state.bodyValue,
       })
       .then((res) => {
+        const updatedPost = {
+          ...this.state.post,
+          ...res,
+        };
         this.setState({
-          post: {
-            ...this.state.post,
-            ...res,
-          },
+          post: updatedPost,
           isOpen: false,
         });
+        const {
+          state: { posts },
+        } = this.context;
+        if (posts && posts.find((el) => el.id === this.state.post.id)) {
+          this.context.dispatch({ type: actionTypes.UPDATE_POST, payload: { post: updatedPost } });
+        }
       });
   };
 
-  onChangeTitle = (e) => {
+  changeValue = (e) => {
+    const { name, value } = e.target;
     this.setState({
-      titleValue: e.target.value,
-    });
-  };
-  onChangeBody = (e) => {
-    this.setState({
-      bodyValue: e.target.value,
+      [name]: value,
     });
   };
 
@@ -84,7 +89,17 @@ export class PostDetails extends Component {
     return (
       <div className="app-post-details">
         <Post post={this.state.post} onEdit={this.handleOpen} />
-        <Modal
+
+        <PostModal
+          isOpen={this.state.isOpen}
+          handleClose={this.handleClose}
+          action={this.savePost}
+          titleValue={this.state.titleValue}
+          bodyValue={this.state.bodyValue}
+          changeValue={this.changeValue}
+          buttonTitle="Save"
+        />
+        {/* <Modal
           open={this.state.isOpen}
           onClose={this.handleClose}
           className="app-post-details__modal"
@@ -106,7 +121,7 @@ export class PostDetails extends Component {
               Save
             </Button>
           </div>
-        </Modal>
+        </Modal> */}
       </div>
     );
   }

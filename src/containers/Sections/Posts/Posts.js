@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 
 import { getAllPosts, updatePosts } from "api/requestData";
-import Modal from "@material-ui/core/Modal";
-import Box from "@material-ui/core/Box";
+
 // import service from "api/service";
 import fbService from "api/fbService";
 import Post from "components/Post/Post";
 import Button from "components/Button/Button";
+import { AppContext } from "context/AppContext";
+import { actionTypes } from "context/actionTypes";
+import PostModal from "components/PostModal/PostModal";
 
 import "./Posts.scss";
 
@@ -15,7 +17,6 @@ let startAt = 0;
 
 export class Posts extends Component {
   state = {
-    posts: [],
     hasMore: true,
     loading: false,
     isOpen: false,
@@ -23,44 +24,27 @@ export class Posts extends Component {
     bodyValue: "",
   };
 
-  componentDidMount() {
-    // this.setState({
-    //   loading: true,
-    // });
-    // service
-    //   .getPosts(0, 9)
-    //   .then((data) => {
-    //     this.setState({
-    //       posts: data,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   })
-    //   .finally(() => {
-    //     this.setState({
-    //       loading: false,
-    //     });
-    //   });
+  static contextType = AppContext;
 
-    this.setState({
-      loading: true,
-    });
-    fbService
-      .getPosts(startAt, limit)
-      .then((data) => {
-        this.setState({
-          posts: data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        this.setState({
-          loading: false,
-        });
+  componentDidMount() {
+    if (!this.context.state.posts) {
+      this.setState({
+        loading: true,
       });
+      fbService
+        .getPosts(startAt, limit)
+        .then((data) => {
+          this.context.dispatch({ type: actionTypes.SET_POSTS, payload: { posts: data } });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.setState({
+            loading: false,
+          });
+        });
+    }
   }
 
   updateItem = () => {
@@ -90,12 +74,12 @@ export class Posts extends Component {
 
   getMore = () => {
     this.setState({ loading: true }, () => {
-      startAt = this.state.posts.length + 1;
+      startAt = this.context.state.posts.length;
       fbService
         .getPosts(startAt, startAt + limit)
         .then((data) => {
+          this.context.dispatch({ type: actionTypes.GET_MORE_POSTS, payload: { posts: data } });
           this.setState({
-            posts: [...this.state.posts, ...data],
             hasMore: data.length > limit,
           });
         })
@@ -113,33 +97,36 @@ export class Posts extends Component {
     if (titleValue && bodyValue) {
       fbService
         .createPost({
-          title: this.state.titleValue,
-          body: this.state.bodyValue,
+          title: titleValue,
+          body: bodyValue,
         })
         .then((data) => {
           console.log(data);
-          this.setState(
-            {
-              posts: [...this.state.posts, data],
+          // this.setState(
+          //   {
+          //     posts: [...this.state.posts, data],
+          //   },
+          //   () => {
+          //     this.handleClose();
+          //   }
+          // );
+          this.context.dispatch({
+            type: actionTypes.CREATE_POST,
+            payload: {
+              post: data,
             },
-            () => {
-              this.handleClose();
-            }
-          );
+          });
+          this.handleClose();
         });
     } else {
       alert("Fields are empty!");
     }
   };
 
-  onChangeTitle = (e) => {
+  changeValue = (e) => {
+    const { name, value } = e.target;
     this.setState({
-      titleValue: e.target.value,
-    });
-  };
-  onChangeBody = (e) => {
-    this.setState({
-      bodyValue: e.target.value,
+      [name]: value,
     });
   };
 
@@ -158,24 +145,19 @@ export class Posts extends Component {
   };
 
   render() {
+    const {
+      state: { posts },
+    } = this.context;
+
+    if (!posts) {
+      return <div>Loading...</div>;
+    }
     return (
       <div className="app-posts">
-        {/* {this.state.posts.length === 0 && this.state.loading && <h4>Loading...</h4>}
-        {this.state.posts.length === 0 && !this.state.loading && <h4>Data not found</h4>}
+        {posts.length === 0 && this.state.loading && <h4>Loading...</h4>}
+        {posts.length === 0 && !this.state.loading && <h4>Data not found</h4>}
         <div className="app-posts__post-container">
-          {this.state.posts.map((post) => {
-            return <Post className="app-posts__post" key={post.id} post={post} isLink />;
-          })}
-        </div>
-        {this.state.hasMore && (
-          <Button onClick={this.getMore} disabled={this.state.loading}>
-            {this.state.loading ? "Loading..." : "Get more"}
-          </Button>
-        )} */}
-        {this.state.posts.length === 0 && this.state.loading && <h4>Loading...</h4>}
-        {this.state.posts.length === 0 && !this.state.loading && <h4>Data not found</h4>}
-        <div className="app-posts__post-container">
-          {this.state.posts.map((post) => {
+          {posts.map((post) => {
             return (
               <Post
                 className="app-posts__post"
@@ -190,29 +172,16 @@ export class Posts extends Component {
         <Button onClick={this.handleOpen} className="app-posts__create-button">
           Create Post
         </Button>
-        <Modal
-          open={this.state.isOpen}
-          onClose={this.handleClose}
-          className="app-post-details__modal"
-        >
-          <div className="app-post-details__modal__inner">
-            <input
-              className="app-post-details__modal__inner__input"
-              type="text"
-              value={this.state.titleValue}
-              onChange={this.onChangeTitle}
-            />
-            <input
-              className="app-post-details__modal__inner__input"
-              type="text"
-              value={this.state.bodyValue}
-              onChange={this.onChangeBody}
-            />
-            <Button variant="contained" color="primary" onClick={this.createPost}>
-              Save
-            </Button>
-          </div>
-        </Modal>
+        <PostModal
+          isOpen={this.state.isOpen}
+          handleClose={this.handleClose}
+          action={this.createPost}
+          titleValue={this.state.titleValue}
+          bodyValue={this.state.bodyValue}
+          changeValue={this.changeValue}
+          buttonTitle="Create"
+        />
+
         {this.state.hasMore && (
           <Button onClick={this.getMore} disabled={this.state.loading}>
             {this.state.loading ? "Loading..." : "Get more"}

@@ -7,7 +7,7 @@ import Layout from "components/Layout/Layout";
 
 import Home from "containers/Sections/Home/Home";
 import About from "containers/Sections/About/About";
-import Todo from "containers/Sections/Todo/Todo";
+import Todos from "containers/Sections/Todos/Todos";
 import Posts from "containers/Sections/Posts/Posts";
 import Contact from "containers/Sections/Contact/Contact";
 import Profile from "containers/Sections/Profile/Profile";
@@ -25,7 +25,7 @@ function AppRoutes() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/about" component={About} />
-            <Route exact path="/todo" component={Todo} />
+            <Route exact path="/todos" component={Todos} />
             <Route exact path="/posts" component={Posts} />
             <Route exact path="/posts/:postId" component={PostDetails} />
             <Route exact path="/contact" component={Contact} />

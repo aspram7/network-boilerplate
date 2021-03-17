@@ -17,13 +17,21 @@ const Profile = () => {
     context.dispatch({ type: actionTypes.REMOVE_USER });
     history.push("/auth");
   };
+  const loginHandler = async () => {
+    history.push("/auth");
+  };
 
   return (
     <div className="profile">
       <div className="profile__name">
-        Hello, I am {context.state.user && context.state.user.displayName}
+        Welcome{" "}
+        <span>{context.state.user ? context.state.user.displayName : "to our sebsite"}</span>
       </div>
-      <Button onClick={logoutHandler}>Logout</Button>
+      {context.state.user ? (
+        <Button onClick={logoutHandler}>Logout</Button>
+      ) : (
+        <Button onClick={loginHandler}>Login</Button>
+      )}
     </div>
   );
 };

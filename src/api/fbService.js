@@ -5,6 +5,7 @@ import "firebase/auth";
 import firebaseConfig from "./firebaseConfig";
 
 import postMockup from "data-mockup/post-mockup";
+import todoMockup from "data-mockup/todo-mockup";
 
 class FbService {
   constructor() {
@@ -15,6 +16,9 @@ class FbService {
 
   initializePosts = () => {
     firebase.database().ref("posts").set(postMockup);
+  };
+  initializeTodos = () => {
+    firebase.database().ref("todos").set(todoMockup);
   };
 
   getAllPosts = async () => {
@@ -27,6 +31,18 @@ class FbService {
     const res = await firebase
       .database()
       .ref("posts")
+      .orderByKey()
+      .startAt(startAt.toString())
+      .endAt(endAt.toString())
+      .get();
+    const data = res.toJSON();
+    return Object.values(data);
+  };
+
+  getTodos = async (startAt = 0, endAt = 8) => {
+    const res = await firebase
+      .database()
+      .ref("todos")
       .orderByKey()
       .startAt(startAt.toString())
       .endAt(endAt.toString())
