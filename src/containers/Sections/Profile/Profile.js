@@ -1,8 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router";
-import { AppContext } from "context/AppContext";
-import Button from "components/Button/Button";
+
 import fbService from "api/fbService";
+import Button from "components/Button/Button";
+import ImageInput from "components/ImageInput/ImageInput";
+import { AppContext } from "context/AppContext";
 import { actionTypes } from "context/actionTypes";
 
 import "./Profile.scss";
@@ -12,25 +14,35 @@ const Profile = () => {
   const context = useContext(AppContext);
 
   const logoutHandler = async () => {
-    await fbService.logout();
+    await fbService.fbServiceAuth.logout();
     localStorage.removeItem("user");
     context.dispatch({ type: actionTypes.REMOVE_USER });
     history.push("/auth");
   };
+
   const loginHandler = async () => {
     history.push("/auth");
   };
 
   return (
-    <div className="profile">
-      <div className="profile__name">
+    <div className="app-profile">
+      <div className="app-profile__name">
+        {context.state.user ? (
+          <div className="app-profile__name__input">
+            <ImageInput userImage={context.state.user.photoURL} />
+          </div>
+        ) : null}
         Welcome{" "}
-        <span>{context.state.user ? context.state.user.displayName : "to our sebsite"}</span>
+        <span>{context.state.user ? context.state.user.displayName : "to Our Website"}</span>
       </div>
       {context.state.user ? (
-        <Button onClick={logoutHandler}>Logout</Button>
+        <Button onClick={logoutHandler} className="app-profile__button">
+          Logout
+        </Button>
       ) : (
-        <Button onClick={loginHandler}>Login</Button>
+        <Button onClick={loginHandler} className="app-profile__button">
+          Login
+        </Button>
       )}
     </div>
   );

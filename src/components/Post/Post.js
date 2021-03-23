@@ -18,11 +18,11 @@ function Post({ className, isLink, post, onEdit, onRemove }) {
     const postClassName = `post-component ${className}`;
     return isLink ? (
       <Link to={`/posts/${post.id}`} className={postClassName}>
-        {context.state.user ? (
+        {context.state.user && (
           <Button variant="contained" color="primary" onClick={_removeHandler}>
             Remove
           </Button>
-        ) : null}
+        )}
 
         {children}
       </Link>

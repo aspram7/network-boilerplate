@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-// import { ToastContainer } from "react-toastify";
 import AppRoutes from "routes/AppRoutes";
 
 import AppContextProvider from "context/AppContextProvider";
-import { store } from "reducers";
-
-import "react-toastify/dist/ReactToastify.css";
+import store from "store";
 
 class App extends Component {
   render() {
@@ -17,7 +14,6 @@ class App extends Component {
             <AppRoutes />
           </AppContextProvider>
         </Provider>
-        {/* <ToastContainer position="bottom-right" className="app-toast-container" /> */}
       </div>
     );
   }

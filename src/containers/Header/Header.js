@@ -1,39 +1,30 @@
 import React, { useContext } from "react";
-
 import { withRouter } from "react-router-dom";
-
 import NavLink from "components/NavLink/NavLink";
+import { AppContext } from "context/AppContext";
+import logo from "assets/logo/logo.png";
 
 import "./Header.scss";
-
-import logo from "assets/logo/logo.png";
-import { AppContext } from "context/AppContext";
 
 const headerLink = [
   { to: "/", title: "Home" },
   { to: "/about", title: "About" },
   { to: "/todos", title: "Todos" },
   { to: "/posts", title: "Posts" },
+  { to: "/images", title: "Images" },
   { to: "/contact", title: "Contact" },
 ];
 
 const Header = () => {
-  // componentDidUpdate(prevState) {
-  //   if (prevState.location.pathname !== this.props.location.pathname) {
-  //     if (this.props.location.pathname === "/posts") {
-  //       document.body.classList.add("body-color");
-  //     } else {
-  //       document.body.classList.remove("body-color");
-  //     }
-  //   }
-  // }
-
   const context = useContext(AppContext);
 
   return (
     <header className="app-header">
       <div className="app-header__container">
-        <img src={logo} alt="logo" />
+        <NavLink to={"/"}>
+          <img src={logo} alt="logo" />
+        </NavLink>
+
         <nav>
           <ul>
             {headerLink.map((el) => {

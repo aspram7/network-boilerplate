@@ -1,5 +1,3 @@
-// export const SET_USER = "SET_USER";
-
 export const actionTypes = {
   SET_USER: "SET_USER",
   REMOVE_USER: "REMOVE_USER",
@@ -7,5 +5,5 @@ export const actionTypes = {
   GET_MORE_POSTS: "GET_MORE_POSTS",
   UPDATE_POST: "UPDATE_POST",
   CREATE_POST: "CREATE_POST",
-  SET_TODOS: "SET_TODOS",
+  REMOVE_POST: "REMOVE_POST",
 };

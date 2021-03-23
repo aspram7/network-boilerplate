@@ -37,10 +37,12 @@ const appReducer = (state, action) => {
         ...state,
         posts: [...state.posts, action.payload.post],
       };
-    case actionTypes.SET_TODOS:
+    case actionTypes.REMOVE_POST:
       return {
         ...state,
-        todos: action.payload.todos,
+        posts: state.posts.filter((el) => {
+          return el.id !== action.payload.id;
+        }),
       };
     default:
       return state;
@@ -48,10 +50,3 @@ const appReducer = (state, action) => {
 };
 
 export default appReducer;
-
-// action = {
-//   type: string SET_USER,
-//   payload: {
-//     user
-//   }
-// }

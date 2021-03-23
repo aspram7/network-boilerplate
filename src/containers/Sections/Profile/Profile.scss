@@ -1,12 +1,20 @@
 @import "~styles/root";
-.profile {
+.app-profile {
+  padding: 60px 0;
   display: flex;
   justify-content: space-between;
   &__name {
     font-size: 20px;
 
+    &__input {
+      margin-bottom: 15px;
+    }
+
     span {
       color: $primary-color;
     }
+  }
+  &__button {
+    height: 40px;
   }
 }

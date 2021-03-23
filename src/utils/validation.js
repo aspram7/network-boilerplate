@@ -4,6 +4,8 @@ const validationList = {
   password: /^[\d+\w+]{6,10}$/,
 };
 
-export default function (name, value) {
+function validation(name, value) {
   return validationList[name].test(value);
 }
+
+export default validation;

@@ -4,7 +4,6 @@ import { PropTypes } from "prop-types";
 
 import Modal from "@material-ui/core/Modal";
 import { Button } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
 
 import "./PostModal.scss";
 

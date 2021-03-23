@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import service from "api/service";
 import fbService from "api/fbService";
-
 import Post from "components/Post/Post";
+import PostModal from "components/PostModal/PostModal";
 import { AppContext } from "context/AppContext";
+import { actionTypes } from "context/actionTypes";
 
 import "./PostDetails.scss";
-import { actionTypes } from "context/actionTypes";
-import PostModal from "components/PostModal/PostModal";
 
 export class PostDetails extends Component {
   constructor(props) {
@@ -23,7 +21,7 @@ export class PostDetails extends Component {
   static contextType = AppContext;
 
   componentDidMount() {
-    fbService
+    fbService.fbServicePost
       .getPost(this.props.match.params.postId)
       .then((data) => {
         this.setState({
@@ -38,20 +36,8 @@ export class PostDetails extends Component {
       });
   }
 
-  handleOpen = () => {
-    this.setState({
-      isOpen: true,
-    });
-  };
-
-  handleClose = () => {
-    this.setState({
-      isOpen: false,
-    });
-  };
-
   savePost = () => {
-    fbService
+    fbService.fbServicePost
       .updatePost({
         ...this.state.post,
         title: this.state.titleValue,
@@ -75,6 +61,18 @@ export class PostDetails extends Component {
       });
   };
 
+  handleOpen = () => {
+    this.setState({
+      isOpen: true,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      isOpen: false,
+    });
+  };
+
   changeValue = (e) => {
     const { name, value } = e.target;
     this.setState({
@@ -83,13 +81,9 @@ export class PostDetails extends Component {
   };
 
   render() {
-    // if (!this.state.post) {
-    //   return <div>Loading...</div>;
-    // }
     return (
       <div className="app-post-details">
         <Post post={this.state.post} onEdit={this.handleOpen} />
-
         <PostModal
           isOpen={this.state.isOpen}
           handleClose={this.handleClose}
@@ -99,29 +93,6 @@ export class PostDetails extends Component {
           changeValue={this.changeValue}
           buttonTitle="Save"
         />
-        {/* <Modal
-          open={this.state.isOpen}
-          onClose={this.handleClose}
-          className="app-post-details__modal"
-        >
-          <div className="app-post-details__modal__inner">
-            <input
-              className="app-post-details__modal__inner__input"
-              type="text"
-              value={this.state.titleValue}
-              onChange={this.onChangeTitle}
-            />
-            <input
-              className="app-post-details__modal__inner__input"
-              type="text"
-              value={this.state.bodyValue}
-              onChange={this.onChangeBody}
-            />
-            <Button variant="contained" color="primary" onClick={this.savePost}>
-              Save
-            </Button>
-          </div>
-        </Modal> */}
       </div>
     );
   }

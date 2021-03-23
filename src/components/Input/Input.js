@@ -4,7 +4,7 @@ import "./Input.scss";
 
 function Input({ className, type, name, placeholder, value, loading, onChange }) {
   return (
-    <form autoComplete="off">
+    <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
       <input
         className={`component-input ${className}`}
         type={type}

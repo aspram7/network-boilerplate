@@ -1,0 +1,26 @@
+.app-home {
+  img {
+    width: 100%;
+    position: relative;
+  }
+
+  &__buttons {
+    position: absolute;
+    top: 60%;
+    right: 15%;
+
+    button {
+      background-color: rgb(155, 155, 155);
+      color: honeydew;
+      border: 1px solid rgb(110, 110, 110);
+      border-radius: 4px;
+      padding: 5px 10px;
+    }
+    span {
+      width: 25px;
+      display: inline-block;
+      text-align: center;
+      margin: 0 5px;
+    }
+  }
+}

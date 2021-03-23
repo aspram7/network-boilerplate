@@ -1,20 +1,16 @@
 import React, { Component } from "react";
 
-import { getAllPosts, updatePosts } from "api/requestData";
-
-// import service from "api/service";
 import fbService from "api/fbService";
 import Post from "components/Post/Post";
 import Button from "components/Button/Button";
+import PostModal from "components/PostModal/PostModal";
 import { AppContext } from "context/AppContext";
 import { actionTypes } from "context/actionTypes";
-import PostModal from "components/PostModal/PostModal";
 
 import "./Posts.scss";
 
 const limit = 8;
 let startAt = 0;
-
 export class Posts extends Component {
   state = {
     hasMore: true,
@@ -31,7 +27,7 @@ export class Posts extends Component {
       this.setState({
         loading: true,
       });
-      fbService
+      fbService.fbServicePost
         .getPosts(startAt, limit)
         .then((data) => {
           this.context.dispatch({ type: actionTypes.SET_POSTS, payload: { posts: data } });
@@ -48,7 +44,7 @@ export class Posts extends Component {
   }
 
   updateItem = () => {
-    fbService.updatePost(1, { title: "Another Title" }).then((item) => {
+    fbService.fbServicePost.updatePost(1, { title: "Another Title" }).then((item) => {
       const newItem = this.state.posts.map((el) => {
         if (el.id === item.id) {
           return item;
@@ -63,19 +59,15 @@ export class Posts extends Component {
   };
 
   deletePost = (id) => {
-    fbService.deletePost(id).then(() => {
-      this.setState({
-        posts: this.state.posts.filter((el) => {
-          return el.id !== id;
-        }),
-      });
+    fbService.fbServicePost.deletePost(id).then(() => {
+      this.context.dispatch({ type: actionTypes.REMOVE_POST, payload: { id } });
     });
   };
 
   getMore = () => {
     this.setState({ loading: true }, () => {
       startAt = this.context.state.posts.length;
-      fbService
+      fbService.fbServicePost
         .getPosts(startAt, startAt + limit)
         .then((data) => {
           this.context.dispatch({ type: actionTypes.GET_MORE_POSTS, payload: { posts: data } });
@@ -95,28 +87,14 @@ export class Posts extends Component {
   createPost = () => {
     const { titleValue, bodyValue } = this.state;
     if (titleValue && bodyValue) {
-      fbService
+      fbService.fbServicePost
         .createPost({
           title: titleValue,
           body: bodyValue,
         })
         .then((data) => {
-          console.log(data);
-          // this.setState(
-          //   {
-          //     posts: [...this.state.posts, data],
-          //   },
-          //   () => {
-          //     this.handleClose();
-          //   }
-          // );
-          this.context.dispatch({
-            type: actionTypes.CREATE_POST,
-            payload: {
-              post: data,
-            },
-          });
           this.handleClose();
+          this.props.history.push(`/posts/${data.id}`);
         });
     } else {
       alert("Fields are empty!");
@@ -187,11 +165,6 @@ export class Posts extends Component {
             {this.state.loading ? "Loading..." : "Get more"}
           </Button>
         )}
-        {/* <div className="app-posts__post-container">
-          {this.state.posts.map((post) => {
-            return <Post className="app-posts__post" key={post.id} post={post} isLink />;
-          })}
-        </div> */}
       </div>
     );
   }

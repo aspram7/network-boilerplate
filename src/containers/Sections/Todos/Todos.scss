@@ -1,0 +1,43 @@
+.app-todos {
+  padding: 60px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__todo-container {
+    margin-bottom: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__todo {
+      width: 80%;
+    }
+  }
+
+  &__todo-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &__inner {
+      width: 600px;
+      height: 400px;
+      box-shadow: 0 0 5px gray;
+      background-color: #fff;
+      padding: 20px;
+
+      &__input {
+        border: 1px solid grey;
+        padding: 4px;
+        display: block;
+        margin: 10px 0;
+        width: 80%;
+      }
+    }
+  }
+  &__create-button {
+    margin-bottom: 20px;
+    background-color: #3ca2f5;
+  }
+}

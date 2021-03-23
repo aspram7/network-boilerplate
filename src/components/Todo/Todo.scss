@@ -1,7 +1,30 @@
 .todo-component {
   color: rgb(59, 59, 59);
   border: 1px solid gray;
-  padding: 15px 10px;
+  padding: 15px 20px;
   margin: 10px 0;
   font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__left-side {
+    display: flex;
+
+    &__checkbox {
+      margin-right: 5px;
+    }
+  }
+
+  &__right-side {
+    display: flex;
+
+    &__edit {
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    &__remove-button {
+      cursor: pointer;
+    }
+  }
 }

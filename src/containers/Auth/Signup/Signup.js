@@ -1,13 +1,11 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-// import { toast } from "react-toastify";
 
 import Input from "components/Input/Input";
 import Button from "components/Button/Button";
 import fbService from "api/fbService";
 import ErrorMessage from "components/ErrorMesage/ErrorMessage";
 import validation from "utils/validation";
-// import errorMap from "utils/errorMap";
 import { AppContext } from "context/AppContext";
 import { actionTypes } from "context/actionTypes";
 
@@ -49,10 +47,11 @@ function Signup(props) {
     ) {
       try {
         setLoading(true);
-        const user = await fbService.signup(credentials);
+        const user = await fbService.fbServiceAuth.signup(credentials);
         console.log("success: ", user);
         context.dispatch({ type: actionTypes.SET_USER, payload: { user } });
         localStorage.setItem("user", JSON.stringify(user));
+        setLoading(false);
         history.push("/profile");
       } catch (err) {
         // toast.error(`Signup failed: ${err}`);
@@ -66,26 +65,22 @@ function Signup(props) {
             passwordError: "*" + err.message,
           });
         }
-      } finally {
         setLoading(false);
       }
     } else {
       let errors = {};
-      switch (false) {
-        case validation("name", name):
-          errors["name"] = "*name is not valid!";
-        /* falls through */
-        case validation("email", email):
-          errors["email"] = "*email is not valid!";
-        /* falls through */
-        case validation("password", password):
-          errors["password"] = "*password must be min 6 and max 10 letters!";
-        /* falls through */
-        case password === confirmPassword:
-          errors["confirmPassword"] = "*passwords are not match!";
-        /* falls through */
-        default:
-          errors = { ...initialState, ...errors };
+
+      if (!validation("name", name)) {
+        errors["name"] = "*name is not valid!";
+      }
+      if (!validation("email", email)) {
+        errors["email"] = "*email is not valid!";
+      }
+      if (!validation("password", password)) {
+        errors["password"] = "*password must be min 6 and max 10 letters!";
+      }
+      if (password !== confirmPassword) {
+        errors["confirmPassword"] = "*passwords are not match!";
       }
 
       setErrorState({ ...errors });

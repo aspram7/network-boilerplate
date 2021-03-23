@@ -1,32 +1,26 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import postsMockup from "data-mockup/post-mockup";
-
 import fbService from "api/fbService";
+import homeImage from "assets/home/home.jpg";
+import { incrementCount, decrementCount } from "store/count/action";
 
+import "./Home.scss";
 class Home extends Component {
   componentDidMount() {
-    // fetch("https://react-learn-eb22c-default-rtdb.firebaseio.com/posts.json", {
-    //   method: "PUT",
-    //   body: JSON.stringify(postsMockup),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // fbService.initializePosts();
-    // fbService.initializeTodos();
+    fbService.fbServicePost.initializePosts();
+    fbService.fbServiceTodo.initializeTodos();
+    fbService.fbServiceImage.initializeImages();
   }
 
   render() {
     return (
-      <div>
-        <button onClick={this.props.incrementCount}>Increment</button>
-        <span>{this.props.count}</span>
-        <button onClick={this.props.decrementCount}>Decrement</button>
+      <div className="app-home">
+        <img src={homeImage} alt="HomeImage" />
+        <div className="app-home__buttons">
+          <button onClick={this.props.incrementCount}>Increment</button>
+          <span>{this.props.count}</span>
+          <button onClick={this.props.decrementCount}>Decrement</button>
+        </div>
       </div>
     );
   }
@@ -39,8 +33,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  incrementCount: () => ({ type: "INCREMENT_COUNT" }),
-  decrementCount: () => ({ type: "DECREMENT_COUNT" }),
+  incrementCount,
+  decrementCount,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
